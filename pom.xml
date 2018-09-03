@@ -22,6 +22,7 @@
     </build>
     <modules>
         <module>demo-kafka</module>
+        <module>docker-push</module>
     </modules>
     <dependencies>
         <dependency>
