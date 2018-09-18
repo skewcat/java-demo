@@ -24,6 +24,7 @@
         <module>demo-kafka</module>
         <module>docker-push</module>
         <module>demo-ml</module>
+        <module>demo-spark</module>
     </modules>
     <dependencies>
         <dependency>
