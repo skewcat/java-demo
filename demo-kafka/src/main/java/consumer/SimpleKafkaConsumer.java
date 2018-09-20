@@ -14,13 +14,14 @@ import java.util.Properties;
  */
 public class SimpleKafkaConsumer {
     private static Logger log = LoggerFactory.getLogger(SimpleKafkaConsumer.class);
-//        private static final String[] TOPIC = {"dev-sysinfo","dev-terminal","dev-usage","dev-syslog"};
-    private static final String[] TOPIC = {"net-topo", "smp-info"};
-
+    private static final String[] TOPIC = {"dev-sysinfo", "dev-terminal", "dev-usage", "dev-syslog", "dev-config"};
+//    private static final String[] TOPIC = {"net-topo", "smp-info"};
+//    private static final String BOOTSTRAP_SERVERS = "172.31.159.11:9092,172.31.159.12:9092,172.31.159.13:9092";
+//    private static final String BOOTSTRAP_SERVERS = "172.18.135.11:9092,172.18.135.12:9092,172.18.135.13:9092";
+    private static final String BOOTSTRAP_SERVERS = "172.18.137.244:9092";
     public static void main(String[] args) {
         Properties props = new Properties();
-//        props.put("bootstrap.servers", "172.31.159.11:9092,172.31.159.12:9092,172.31.159.13:9092");
-        props.put("bootstrap.servers", "172.18.135.11:9092,172.18.135.12:9092,172.18.135.13:9092");
+        props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
         props.put("group.id", "test");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "1000");//自动提交偏移量到ZK的间隔

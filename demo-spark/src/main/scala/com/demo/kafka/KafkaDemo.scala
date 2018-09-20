@@ -5,10 +5,13 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
+import org.slf4j.LoggerFactory
 
 object KafkaDemo {
+  val LOG = LoggerFactory.getLogger(KafkaDemo.getClass)
   val KAFKA_BOOTSTRAP_SERVERS = "172.18.135.11:9092,172.18.135.12:9092,172.18.135.13:9092"
-  val TOPIC = "dev-sysinfo,dev-terminal,dev-usage,dev-syslog"
+  //  val TOPIC = "dev-sysinfo,dev-terminal,dev-usage,dev-syslog"
+  val TOPIC = "dev-config"
 
   def sql_type(): Unit = {
     val spark = SparkSession.builder().appName("kafkaDeme").master("local[*]").getOrCreate()
@@ -42,6 +45,7 @@ object KafkaDemo {
       "auto.offset.reset" -> "latest",
       "enable.auto.commit" -> (false: java.lang.Boolean)
     )
+    LOG.info("kafkaParams=" + kafkaParams)
     val messages = KafkaUtils.createDirectStream[String, String](
       ssc,
       LocationStrategies.PreferConsistent,
