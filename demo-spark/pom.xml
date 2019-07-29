@@ -11,8 +11,10 @@
 
     <artifactId>demo.spark</artifactId>
     <properties>
-        <spark.version>2.3.1</spark.version>
+        <spark.version>2.4.1</spark.version>
         <scala.version>2.11</scala.version>
+        <dwMetrics.version>4.1.0</dwMetrics.version>
+        <influx.sink.version>1.2.3</influx.sink.version>
     </properties>
 
     <profiles>
@@ -75,6 +77,29 @@
             <artifactId>spark-streaming_${scala.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb.spark</groupId>
+            <artifactId>mongo-spark-connector_${scala.version}</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-mllib -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-mllib_${scala.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!--监控，对接influxdb-->
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>${dwMetrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.izettle</groupId>
+            <artifactId>dropwizard-metrics-influxdb</artifactId>
+            <version>${influx.sink.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -104,6 +129,51 @@
                     <target>8</target>
                     <encoding>UTF8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <finalName>demo-spark-SDK</finalName>
+                    <!--<descriptorRefs>
+                                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                                    </descriptorRefs>-->
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                    <archive>
+                        <manifest>
+                            <mainClass>WordCont</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <finalName>demo-spark-SDK</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
